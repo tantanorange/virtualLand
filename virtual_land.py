@@ -17,12 +17,12 @@ driver.get(starturl)
 # driver.find_element_by_xpath("//select[@aria-label='rows per page']/option[text()='50 rows']").click()
 result = []
 count = 0
-while count < 1:  # set
+while count < 5:  # set
     element = WebDriverWait(driver, 20).until(
         EC.visibility_of_all_elements_located((By.CSS_SELECTOR, "div.rt-tr-group div.rt-td")))
     for my_ele in element:
         result.append(my_ele.text)
-    sleeptime = random.uniform(4, 6)
+    sleeptime = random.uniform(2, 4)
     time.sleep(sleeptime)
     button = driver.find_element_by_xpath('//button[contains(text(), "Next")]')
     driver.execute_script("arguments[0].click();", button)
@@ -38,9 +38,9 @@ index = 1
 grouped = []
 queried = {}
 
-while index < 50:
+while index < 800:
     if result[index] not in queried:
-        # double check if this is right
+        # double checked if this is right
         r = requests.get('https://api.decentraland.org/v1/parcels/{}'.format(result[index]))
         if r.status_code != 200:
             print('Boo!')
@@ -54,7 +54,7 @@ while index < 50:
                                                                                                properties['data']['y'],
                                                                                                properties])
     index += 8
-    sleeptime = random.uniform(4, 6)
+    sleeptime = random.uniform(2, 4)
     time.sleep(sleeptime)
     # if (index - 1) % 50 == 0:
     #     print('finish', index)
