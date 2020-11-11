@@ -40,6 +40,7 @@ queried = {}
 
 while index < 50:
     if result[index] not in queried:
+        # double check if this is right
         r = requests.get('https://api.decentraland.org/v1/parcels/{}'.format(result[index]))
         if r.status_code != 200:
             print('Boo!')
