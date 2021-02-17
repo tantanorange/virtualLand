@@ -9,20 +9,21 @@ import time
 import json
 import string
 
-
-## selenium for hospital page
+### SCRAPING
+##################################################################  SCRAPE NONFUNGIBLE SITE  ############################################################################
 starturl = "https://nonfungible.com/market/history/decentraland?filter=nftTicker%3DLAND&filter=saleType%3D&length=100&sort=blockTimestamp%3Ddesc&start=0"
-
-driver = webdriver.Chrome(r'C:\Users\chengkun\chromedriver.exe')  # change the driver's directory here
+driver = webdriver.Chrome(r'C:\Users\chengkun\chromedriver.exe')  # change the driver's directory to your local place
 driver.get(starturl)
-# driver.find_element_by_xpath("//select[@aria-label='rows per page']/option[text()='50 rows']").click()
+# iver.find_element_by_xpath("//select[@aria-label='rows per page']/option[text()='50 rows']").click()
 result = []
 count = 0
 # count is the amoutn of pages you are going through
 while count < 1:  # set this yourself: this number is the returned 
+    # collect all visible elements in the table
     element = WebDriverWait(driver, 20).until(
         EC.visibility_of_all_elements_located((By.CSS_SELECTOR, "div.rt-tr-group div.rt-td")))
     for my_ele in element:
+        
         result.append(my_ele.text)
     sleeptime = random.uniform(2, 4)
     time.sleep(sleeptime)
@@ -34,7 +35,8 @@ while count < 1:  # set this yourself: this number is the returned
 print(result)
 print(count)
 
-
+## QUERY
+##################################################################  QUERY DECENTRALAND API  #########################################################################################
 # Index has to start from index = 1, because in the returned result[]: second item is the land reference number, and it occurs every 8 elements (8 itmes each line on the website)
 index = 1
 # queried is a dictionary to store a structure: land reference -> properties.
