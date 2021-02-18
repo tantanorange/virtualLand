@@ -6,20 +6,19 @@ from selenium.webdriver.common.by import By
 from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
 import time
-import math
-import json
 
 # SCRAPING
 ##################################################################  SCRAPE NONFUNGIBLE SITE  ############################################################################
+
 test_url = "https://nonfungible.com/market/history/decentraland?filter=nftTicker%3DLAND&filter=saleType%3D&length=50&sort=blockTimestamp%3Ddesc&start=0"
 start_url = "https://nonfungible.com/market/history/decentraland?filter=nftTicker%3DLAND&filter=saleType%3D&length=100&sort=blockTimestamp%3Ddesc&start=0"
 driver = webdriver.Chrome(r'C:\Users\chengkun\chromedriver.exe')  # change the driver's directory to your local place
 driver.maximize_window()
 driver.get(test_url)
 # iver.find_element_by_xpath("//select[@aria-label='rows per page']/option[text()='50 rows']").click()
+
 result = []
 page_count = 1
-# count is the amoutn of pages you are going through
 while page_count <= 1:  # set this yourself: this number is the returned
     # collect all present elements in the table
     # First return the table body: table body -> table_rows -> row-> 8 columns
@@ -30,7 +29,7 @@ while page_count <= 1:  # set this yourself: this number is the returned
     print(table_rows)
     print()
     print(
-        "#################################################################  Page Divider  #####################################################################")
+        "===================================================================  Page Divider  ===================================================================")
     print()
     row_count = 1
     for row in table_rows:
@@ -118,7 +117,8 @@ while page_count <= 1:  # set this yourself: this number is the returned
 
         ##### 2.7: Use JavaScript + xPath (WORKING PERFECTLY: LONG LIVE JS!!!)
         print(row)
-        click_xpath = '//*[@id="__next"]/div/div[1]/div[2]/div[2]/div/div[2]/div[1]/div[3]/div/div[1]/div[2]/div[{}]/div/div[2]'.format(row_count)
+        click_xpath = '//*[@id="__next"]/div/div[1]/div[2]/div[2]/div/div[2]/div[1]/div[3]/div/div[1]/div[2]/div[{}]/div/div[2]'.format(
+            row_count)
         click_element = driver.find_element_by_xpath(click_xpath)
         print(click_element)
         driver.execute_script("arguments[0].click();", click_element)
@@ -146,35 +146,21 @@ while page_count <= 1:  # set this yourself: this number is the returned
 print(page_count)
 print(result)
 
-#     element = WebDriverWait(driver, 20).until(
-#         EC.visibility_of_all_elements_located((By.CSS_SELECTOR, "div.rt-tr-group div.rt-td")))
-#     for my_ele in element:
-
-#         result.append(my_ele.text)
-#     sleeptime = random.uniform(2, 4)
-#     time.sleep(sleeptime)
-#     button = driver.find_element_by_xpath('//button[contains(text(), "Next")]')
-#     driver.execute_script("arguments[0].click();", button)
-
-#     count += 1
-
-# print(result)
-# print(count)
-
 # QUERY
 ##################################################################  QUERY DECENTRALAND API  #########################################################################################
-# Index has to start from index = 1, because in the returned result[]: second item is the land reference number, and it occurs every 12 elements
+
+# Index has to start from index = 5, because in the returned result[]: 5th and 6th elements are land coordinates x , y. They occur every 12 elements
 index = 5
 # queried is a dictionary to store a structure: land reference -> properties.
 queried = {}
 # grouped is the final outcome of what we want to put inside the csv file.
 grouped = []
 
-while index < len(result) - 6:  # set this yourself: this number is number of parcels TIMES 8 (because the land reference number occurs every 12 elements)
+while index < len(result) - 6:
 
     # check if this parcel has already been queried. if not, query it; else,
     if result[index - 4] not in queried.keys():
-        # requests xhr resources
+        # requests xhr resources from decentraland V2 API
         xhr = 'https://api.decentraland.org/v2/parcels/{}/{}'
         response = requests.get(xhr.format(result[index], result[index + 1]))
         if response.status_code != 200:
@@ -185,16 +171,15 @@ while index < len(result) - 6:  # set this yourself: this number is number of pa
         queried[result[index - 4]] = properties
         print(properties)
     else:
-        queried[result[index - 4]] = properties
+        properties = queried[result[index - 4]]
+        print(properties)
 
     grouped.append([str(result[index - 4]), result[index - 3], result[index - 2], result[index - 1], result[index],
                     result[index + 1], result[index + 2], result[index + 3], result[index + 4], result[index + 5],
                     result[index + 6], properties])
     index += 12
-    sleep_time = random.uniform(2, 3)
+    sleep_time = random.uniform(1, 2)
     time.sleep(sleep_time)
-    # if (index - 1) % 50 == 0:
-    #     print('finish', index)
 
 print('finished number of parcels', index % 12)
 
