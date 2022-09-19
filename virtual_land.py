@@ -12,7 +12,7 @@ import time
 
 test_url = "https://nonfungible.com/market/history/decentraland?filter=nftTicker%3DLAND&filter=saleType%3D&length=50&sort=blockTimestamp%3Ddesc&start=0"
 start_url = "https://nonfungible.com/market/history/decentraland?filter=nftTicker%3DLAND&filter=saleType%3D&length=100&sort=blockTimestamp%3Ddesc&start=0"
-driver = webdriver.Chrome(r'C:\Users\chengkun\chromedriver.exe')  # change the driver's directory to your local place
+driver = webdriver.Chrome(r'/Users/chengkun/Desktop/virtualLand/chromedriver')  # change the driver's directory to your local place
 driver.maximize_window()
 driver.get(test_url)
 # iver.find_element_by_xpath("//select[@aria-label='rows per page']/option[text()='50 rows']").click()
