@@ -11,7 +11,7 @@ import time
 ##################################################################  SCRAPE NONFUNGIBLE SITE  ############################################################################
 
 test_url = "https://nonfungible.com/market/history/decentraland?filter=nftTicker%3DLAND&filter=saleType%3D&length=50&sort=blockTimestamp%3Ddesc&start=0"
-start_url = "https://nonfungible.com/market/history/decentraland?filter=nftTicker%3DLAND&filter=saleType%3D&length=100&sort=blockTimestamp%3Ddesc&start=0"
+start_url_2018 = "https://nonfungible.com/market-tracker/decentraland?filter=nftTicker=LAND&filter=saleType=&length=100&sort=blockTimestamp%3Ddesc&start=0"
 driver = webdriver.Chrome(r'/Users/chengkun/Desktop/virtualLand/chromedriver')  # change the driver's directory to your local place
 driver.maximize_window()
 driver.get(test_url)
@@ -158,7 +158,7 @@ grouped = []
 
 while index < len(result) - 6:
 
-    # check if this parcel has already been queried. if not, query it; else,
+    # check if this parcel has already been queried. if not, query it; else, skip it.
     if result[index - 4] not in queried.keys():
         # requests xhr resources from decentraland V2 API
         xhr = 'https://api.decentraland.org/v2/parcels/{}/{}'
@@ -185,5 +185,5 @@ print('finished number of parcels', index % 12)
 
 df = pd.DataFrame(grouped, columns=['asset_id', 'price', 'token_price', 'sale_date', 'x', 'y', 'to_road', 't0_genesis',
                                     'to_district', 'closest_genesis', 'closest_district', 'properties_json'])
-df.to_csv('virtual_land1.csv', index=True, header=True)
+df.to_csv('output.csv', index=True, header=True)
 print(df)
