@@ -147,7 +147,7 @@ print(page_count)
 print(result)
 
 # QUERY
-##################################################################  QUERY DECENTRALAND API  #########################################################################################
+####################################################################  QUERY DECENTRALAND API  ##########################################################################################
 
 # Index has to start from index = 5, because in the returned result[]: 5th and 6th elements are land coordinates x , y. They occur every 12 elements
 index = 5
